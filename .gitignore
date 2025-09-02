@@ -1,0 +1,18 @@
+Virtual Environment
+
+venv/
+/venv/
+pycache/
+
+Environment variables
+
+.env
+
+Database file
+
+*.db
+*.sqlite3
+
+VS Code settings
+
+.vscode/
