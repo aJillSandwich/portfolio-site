@@ -19,20 +19,13 @@ mail = Mail()
 
 def create_app():
     """Application factory function"""
-    app = Flask(__name__)
+    # Use instance_relative_config to tell Flask the instance folder is valid
+    app = Flask(__name__, instance_relative_config=True)
     
-    # Get the absolute path of the project's root directory
-    basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-
-    # Load configuration
+    # Load configuration from environment variables found in the .env file
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-    # Use the absolute path for the database URI
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'site.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    # --- NEW DEBUGGING LINE ---
-    print(f"DATABASE PATH IS NOW: {app.config['SQLALCHEMY_DATABASE_URI']}")
-    # --------------------------
 
     # Initialize extensions with the app
     db.init_app(app)
@@ -45,4 +38,3 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
-
